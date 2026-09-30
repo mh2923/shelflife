@@ -1,16 +1,43 @@
-# React + Vite
+# ShelfLife
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ShelfLife is a reading tracker and book discovery application developed as the group project for ISTE 340 – Client Programming.
 
-Currently, two official plugins are available:
+The application allows users to discover books, view book details, organize books into reading shelves, and view simple reading statistics.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Team 2
 
-## React Compiler
+- Muhammad Usman Habib (761005924)
+- Yehya Fayad (772001680)
+- Abdulrahman Shurrab (784003726)
+- Yousef Al-Salman (754001885)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Project Theme
 
-## Expanding the ESLint configuration
+Theme B – ShelfLife: Reading Tracker and Discovery
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Technologies
+
+- React
+- Vite
+- JavaScript
+- React Router
+- CSS
+- Open Library API
+
+## Running the Project
+
+1. Clone the repository.
+2. Open the project folder in a terminal.
+3. Install the dependencies:
+
+   npm install
+
+4. Start the development server:
+
+   npm run dev
+
+5. Open the local URL displayed in the terminal.
+
+## Project Status
+
+Phase 2 – Static Interface

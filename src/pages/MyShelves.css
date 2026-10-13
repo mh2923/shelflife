@@ -232,3 +232,71 @@
         padding: 10px 12px;
     }
 }
+
+
+/* ShelfLife cream-and-navy theme */
+
+.my-shelves-page {
+  color: #243047;
+}
+
+.shelves-header h1 {
+  color: #243047;
+}
+
+.shelves-header p {
+  color: #6b7280;
+}
+
+.shelf-add-button {
+  background-color: #243047;
+  color: #ffffff;
+}
+
+.shelf-add-button:hover {
+  background-color: #a47750;
+}
+
+.shelf-tab {
+  background-color: #ffffff;
+  color: #243047;
+  border-color: #e5ddd1;
+}
+
+.shelf-tab:hover {
+  background-color: #eee8de;
+}
+
+.shelf-tab.active {
+  background-color: #243047;
+  border-color: #243047;
+  color: #ffffff;
+}
+
+.shelf-tab.active:hover {
+  background-color: #34425b;
+}
+
+.shelf-tab.active .shelf-count {
+  background-color: #f7f3eb;
+  color: #243047;
+}
+
+.shelf-book-card {
+  border-color: #e5ddd1;
+  box-shadow: 0 4px 14px rgba(36, 48, 71, 0.06);
+}
+
+.shelf-cover-placeholder {
+  background-color: #eee8de;
+  border-color: #d6cbbd;
+}
+
+.shelf-move-select {
+  border-color: #d6cbbd;
+}
+
+.shelf-move-select:focus {
+  outline: 2px solid #a47750;
+  outline-offset: 1px;
+}

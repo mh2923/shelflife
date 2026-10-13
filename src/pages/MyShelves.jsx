@@ -21,7 +21,11 @@ function ShelfBookCard({ book }) {
     return (
         <div className="shelf-book-card">
             <div className="shelf-cover-placeholder">
-                No Cover
+                <img
+                    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
+                    alt={`Cover of ${book.title}`}
+                    className="shelf-book-cover"
+                />
             </div>
 
             <div className="shelf-book-info">

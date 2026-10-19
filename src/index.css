@@ -5,4 +5,24 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: #f7f3eb;
+  color: #243047;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.page-container {
+  min-height: calc(100vh - 75px);
+}
+
+a {
+  transition: color 0.2s;
 }

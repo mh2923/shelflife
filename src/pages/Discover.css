@@ -129,3 +129,67 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ShelfLife bookstore theme */
+
+.discover-header h1 {
+  color: #243047;
+  font-size: 42px;
+}
+
+.discover-header p {
+  color: #6b7280;
+}
+
+.discover-results h2 {
+  color: #243047;
+  font-size: 26px;
+}
+
+.search-container input {
+  background-color: #ffffff;
+  border: 1px solid #d6cbbd;
+}
+
+.search-container input:focus {
+  outline: 2px solid #a47750;
+  outline-offset: 1px;
+}
+
+.search-container button,
+.details-button {
+  background-color: #243047;
+  color: #ffffff;
+}
+
+.search-container button:hover,
+.details-button:hover {
+  background-color: #a47750;
+}
+
+.book-card {
+  border: 1px solid #e5ddd1;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(36, 48, 71, 0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(36, 48, 71, 0.13);
+}
+
+.book-cover {
+  background-color: #eee8de;
+}
+
+.book-card-info h3 {
+  color: #243047;
+}
+
+@media (max-width: 600px) {
+  .discover-header h1 {
+    font-size: 30px;
+  }
+}
+

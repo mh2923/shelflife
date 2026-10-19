@@ -18,18 +18,32 @@
 
 .book-details-top {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 2rem;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 40px;
   align-items: start;
 }
 
-.book-cover img,
+
+.book-cover {
+  width: 100%;
+  max-width: 300px;
+}
+
+.book-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
 .book-cover-placeholder {
   width: 100%;
   aspect-ratio: 2 / 3;
   border-radius: 8px;
-  object-fit: cover;
 }
+
 
 .book-cover-placeholder {
   display: flex;
@@ -194,5 +208,106 @@
   .book-details-bottom {
     grid-template-columns: 1fr;
     margin-top: 1.75rem;
+  }
+}
+
+
+/* ShelfLife Book Details layout and theme */
+
+.book-details {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  color: #243047;
+}
+
+.back-link {
+  color: #a47750;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  color: #243047;
+}
+
+.book-details-top {
+  gap: 40px;
+}
+
+.book-title {
+  color: #243047;
+  margin-bottom: 12px;
+}
+
+.book-author {
+  color: #6b7280;
+}
+
+.book-year {
+  color: #8b735e;
+}
+
+.subject-tag {
+  background-color: #eee8de;
+  border-color: #d6cbbd;
+  color: #243047;
+}
+
+.book-description p {
+  color: #4b5563;
+}
+
+.book-details-bottom {
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.info-card {
+  background-color: #ffffff;
+  border: 1px solid #e5ddd1;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 14px rgba(36, 48, 71, 0.06);
+}
+
+.info-card h2 {
+  color: #243047;
+}
+
+.shelf-select {
+  border-color: #d6cbbd;
+}
+
+.shelf-select:focus {
+  outline: 2px solid #a47750;
+  outline-offset: 1px;
+}
+
+.shelf-button {
+  background-color: #243047;
+}
+
+.shelf-button:hover {
+  background-color: #a47750;
+}
+
+/* Tablet and mobile */
+@media (max-width: 768px) {
+  .book-details {
+    padding: 28px 16px 40px;
+  }
+
+  .book-details-top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .book-details-bottom {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+
+  .info-card {
+    padding: 20px;
   }
 }

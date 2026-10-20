@@ -5,15 +5,24 @@ import Discover from "./pages/Discover";
 import BookDetails from "./pages/BookDetails";
 import MyShelves from "./pages/MyShelves";
 import Statistics from "./pages/Statistics";
+import books from "./data/books";
+
+
+const navLinks = [
+  { path: "/", label: "Discover" },
+  { path: "/shelves", label: "My Shelves" },
+  { path: "/statistics", label: "Statistics" },
+];
+
 
 function App() {
   return (
     <div className="app">
-      <Navbar />
+      <Navbar links={navLinks} />
 
       <main className="page-container">
         <Routes>
-          <Route path="/" element={<Discover />} />
+          <Route path="/" element={<Discover books={books} />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/shelves" element={<MyShelves />} />
           <Route path="/statistics" element={<Statistics />} />

@@ -2,18 +2,20 @@
 import { useState } from "react";
 import "./MyShelves.css";
 
+
 const books = [
-    { id: 1, title: "The Hobbit", author: "J.R.R. Tolkien", year: 1937, shelf: "Want to Read" },
-    { id: 2, title: "1984", author: "George Orwell", year: 1949, shelf: "Want to Read" },
-    { id: 3, title: "Dune", author: "Frank Herbert", year: 1965, shelf: "Want to Read" },
-    { id: 4, title: "The Alchemist", author: "Paulo Coelho", year: 1988, shelf: "Want to Read" },
-    { id: 5, title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, shelf: "Want to Read" },
-    { id: 6, title: "Atomic Habits", author: "James Clear", year: 2018, shelf: "Reading" },
-    { id: 7, title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", year: 1997, shelf: "Reading" },
-    { id: 8, title: "The Hunger Games", author: "Suzanne Collins", year: 2008, shelf: "Finished" },
-    { id: 9, title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, shelf: "Finished" },
-    { id: 10, title: "The Fault in Our Stars", author: "John Green", year: 2012, shelf: "Finished" },
+    { id: 1, title: "The Hobbit", author: "J.R.R. Tolkien", year: 1937, shelf: "Want to Read", isbn: "9780547928227" },
+    { id: 2, title: "1984", author: "George Orwell", year: 1949, shelf: "Want to Read", isbn: "9780451524935" },
+    { id: 3, title: "Dune", author: "Frank Herbert", year: 1965, shelf: "Want to Read", isbn: "9780441172719" },
+    { id: 4, title: "The Alchemist", author: "Paulo Coelho", year: 1988, shelf: "Want to Read", isbn: "9780061122415" },
+    { id: 5, title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, shelf: "Want to Read", isbn: "9780743273565" },
+    { id: 6, title: "Atomic Habits", author: "James Clear", year: 2018, shelf: "Reading", isbn: "9780735211292" },
+    { id: 7, title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", year: 1997, shelf: "Reading", isbn: "9780590353427" },
+    { id: 8, title: "The Hunger Games", author: "Suzanne Collins", year: 2008, shelf: "Finished", isbn: "9780439023481" },
+    { id: 9, title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, shelf: "Finished", isbn: "9780061120084" },
+    { id: 10, title: "The Fault in Our Stars", author: "John Green", year: 2012, shelf: "Finished", isbn: "9780525478812" },
 ];
+
 
 const shelfNames = ["Want to Read", "Reading", "Finished"];
 

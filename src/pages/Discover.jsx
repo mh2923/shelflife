@@ -1,8 +1,7 @@
 import BookCard from "../components/BookCard";
-import books from "../data/books";
 import "./Discover.css";
 
-function Discover() {
+function Discover({ books }) {
   return (
     <main className="discover-page">
       <section className="discover-header">

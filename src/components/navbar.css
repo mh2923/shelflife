@@ -105,3 +105,21 @@
     font-size: 13px;
   }
 }
+
+
+/* ShelfLife image logo */
+
+.navbar-logo-image {
+  display: block;
+  width: auto;
+  height: 44px;
+  max-width: 190px;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  .navbar-logo-image {
+    height: 34px;
+    max-width: 150px;
+  }
+}

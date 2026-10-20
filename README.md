@@ -1,43 +1,186 @@
 # ShelfLife
 
-ShelfLife is a reading tracker and book discovery application developed as the group project for ISTE 340 – Client Programming.
+**ShelfLife – Reading Tracker and Book Discovery**
 
-The application allows users to discover books, view book details, organize books into reading shelves, and view simple reading statistics.
+ShelfLife is a React-based reading tracker and book discovery application developed for **ISTE 340 – Client Programming** at Rochester Institute of Technology (RIT).
 
-## Team 2
+The application is designed to help readers discover books, view book information, organize their reading shelves, and explore simple reading statistics.
 
-- Muhammad Usman Habib (761005924)
-- Yehya Fayad (772001680)
-- Abdulrahman Shurrab (784003726)
-- Yousef Al-Salman (754001885)
+This repository currently contains the **Phase 2 – Static Interface** implementation.
+
+## Team 2 – Team React
+
+| Team Member | Student ID |
+|---|---|
+| Muhammad Usman Habib | 761005924 |
+| Yehya Fayad | 772001680 |
+| Abdulrahman Shurrab | 784003726 |
+| Yousef Al-Salman | 754001885 |
 
 ## Project Theme
 
-Theme B – ShelfLife: Reading Tracker and Discovery
+**Theme B – ShelfLife: Reading Tracker and Discovery**
 
-## Technologies
+The project uses the Open Library API as its planned source of book information. During Phase 2, the application uses hardcoded sample book data to demonstrate the interface before live API integration.
+
+## Technologies Used
 
 - React
 - Vite
-- JavaScript
-- React Router
+- JavaScript (ES6+)
+- React Router DOM
 - CSS
-- Open Library API
+- Open Library Covers API (book cover images)
 
-## Running the Project
+## Phase 2 Features
 
-1. Clone the repository.
-2. Open the project folder in a terminal.
-3. Install the dependencies:
+The Phase 2 implementation includes four pages:
 
+### 1. Discover Books
+
+- Displays a collection of sample books.
+- Shows book covers, titles, authors, and publication years.
+- Uses a reusable `BookCard` component.
+- Includes a search interface for future implementation.
+- Allows navigation to individual book details.
+
+### 2. Book Details
+
+- Displays detailed information about a selected book.
+- Shows its cover, title, author, publication year, description, and subjects.
+- Uses dynamic routes to display the selected book.
+- Includes a shelf selection interface for future functionality.
+
+### 3. My Shelves
+
+- Displays books organized into three reading categories:
+  - Want to Read
+  - Reading
+  - Finished
+- Uses sample book data and book cover images.
+- Allows users to switch between shelf tabs.
+- Displays the number of books in each category.
+- Includes placeholder controls for adding, moving, and removing books.
+
+### 4. Reading Statistics
+
+- Displays the total number of books.
+- Shows the number of books in each reading category.
+- Includes a visual bookshelf representation of shelf distribution.
+- Displays book counts grouped by publication decade.
+- Uses hardcoded sample data for Phase 2.
+
+## React Concepts Implemented
+
+- Functional React components
+- Reusable components and props
+- JSX
+- JavaScript arrays and objects
+- Rendering lists using `.map()` and unique keys
+- Conditional rendering
+- React Router navigation
+- Dynamic routes using `useParams()`
+- Basic state management using `useState()`
+- Responsive styling using CSS
+
+## Project Structure
+
+```text
+src/
+├── assets/
+│   └── shelflife-logo.png
+├── components/
+│   ├── BookCard.jsx
+│   ├── Navbar.jsx
+│   └── Navbar.css
+├── data/
+│   └── books.js
+├── pages/
+│   ├── Discover.jsx
+│   ├── Discover.css
+│   ├── BookDetails.jsx
+│   ├── BookDetails.css
+│   ├── MyShelves.jsx
+│   ├── MyShelves.css
+│   ├── Statistics.jsx
+│   └── Statistics.css
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+## How to Run the Project
+
+**Prerequisites:**
+
+- Node.js
+- npm
+
+**Steps:**
+
+1. Clone the GitHub repository or extract the submitted ZIP file.
+2. Open the project folder in Visual Studio Code or a terminal.
+3. Install the required dependencies:
+
+   ```bash
    npm install
+   ```
 
 4. Start the development server:
 
+   ```bash
    npm run dev
+   ```
 
-5. Open the local URL displayed in the terminal.
+5. Open the local URL shown in the terminal, usually:
 
-## Project Status
+   ```text
+   http://localhost:5173/
+   ```
 
-Phase 2 – Static Interface
+## Application Routes
+
+| Route | Page |
+|---|---|
+| `/` | Discover Books |
+| `/book/:id` | Book Details |
+| `/shelves` | My Shelves |
+| `/statistics` | Reading Statistics |
+
+React Router is used to navigate between pages without full-page reloads.
+
+## Current Project Status
+
+**Phase 2 – Static Interface**
+
+The application currently demonstrates its layout, navigation, reusable components, sample book data, and reading statistics.
+
+Book information is hardcoded for this phase. Book cover images are displayed using Open Library cover URLs.
+
+The search, Add to Shelf, Move, and Remove controls are included as interface placeholders and are not yet connected to live data or persistent storage.
+
+## Planned Future Development
+
+**Phase 3 – Live Data**
+- Integrate the Open Library API.
+- Implement book searching and filtering.
+- Display loading, error, and empty states.
+
+**Phase 4 – Interaction and Polish**
+- Implement functional shelf management.
+- Add form validation.
+- Use React Context for shared state.
+- Save reading shelves or preferences using localStorage.
+
+**Phase 5 – Final Delivery**
+- Complete application testing and improvements.
+- Prepare the final demonstration and presentation.
+- Submit the required project documentation and AI-use reflection.
+
+## Course Information
+
+**Course:** ISTE 340 – Client Programming  
+**Instructor:** Dr. Ali Rodan  
+**Semester:** Fall 2026  
+**Project:** Group Project – ShelfLife  
+**Current Phase:** Phase 2 – Static Interface

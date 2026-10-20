@@ -37,7 +37,7 @@ function BookDetails() {
       </Link>
 
       <div className="book-details-top">
-        <div className="book-cover">
+        <div className="details-cover">
           <img
             src={`https://covers.openlibrary.org/b/id/${book.coverId}-L.jpg`}
             alt={`Cover of ${book.title}`}

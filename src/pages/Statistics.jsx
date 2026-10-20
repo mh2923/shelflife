@@ -1,19 +1,21 @@
 import "./Statistics.css";
 
-
 const shelfData = [
   { id: "want", label: "Want to Read", count: 5 },
-  { id: "reading", label: "Reading", count: 3 },
-  { id: "finished", label: "Finished", count: 4 },
+  { id: "reading", label: "Reading", count: 2 },
+  { id: "finished", label: "Finished", count: 3 },
 ];
 
 const decadeData = [
-  { id: "1980s", label: "1980s", count: 2 },
-  { id: "1990s", label: "1990s", count: 3 },
-  { id: "2000s", label: "2000s", count: 4 },
-  { id: "2010s", label: "2010s", count: 3 },
+  { id: "1920s", label: "1920s", count: 1 },
+  { id: "1930s", label: "1930s", count: 1 },
+  { id: "1940s", label: "1940s", count: 1 },
+  { id: "1960s", label: "1960s", count: 2 },
+  { id: "1980s", label: "1980s", count: 1 },
+  { id: "1990s", label: "1990s", count: 1 },
+  { id: "2000s", label: "2000s", count: 1 },
+  { id: "2010s", label: "2010s", count: 2 },
 ];
-
 
 const SPINE_LOOKS = [
   { width: 1.0, height: 78 },

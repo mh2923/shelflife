@@ -193,3 +193,152 @@
   }
 }
 
+
+/* Phase 3: API loading, error and empty states */
+
+.discover-status {
+  margin: 28px 0;
+  padding: 24px;
+  text-align: center;
+  background: #f7f3eb;
+  color: #243047;
+  border: 1px solid #ded6c9;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.discover-error {
+  background: #fff0ed;
+  color: #9b3030;
+  border-color: #e9c3bb;
+}
+
+.book-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #e8e0d3;
+  color: #66594d;
+  text-align: center;
+  font-size: 14px;
+}
+
+
+/* Phase 3 layout fixes */
+
+/* Keep the search bar styled like Phase 2 */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  max-width: 650px;
+  margin: 28px auto 0;
+}
+
+.search-container input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 16px;
+  border: 1px solid #d6cbbb;
+  border-radius: 8px;
+  background: #fff;
+  color: #22314b;
+  font-size: 16px;
+}
+
+.search-container button {
+  padding: 13px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #22314b;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background: #344a6d;
+}
+
+/* Prevent book covers from overflowing */
+.book-card {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.book-cover {
+  display: block;
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  background: #eee8df;
+}
+
+/* Keep the book information below the cover */
+.book-card-info {
+  padding: 20px;
+  min-width: 0;
+}
+
+.book-card-info h3 {
+  margin-top: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Missing-cover fallback */
+.no-cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #6d6255;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Mobile search bar */
+@media (max-width: 600px) {
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container button {
+    width: 100%;
+  }
+}
+
+/* Results heading and Back to Explore button */
+
+.results-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.results-heading h2 {
+  margin: 0;
+}
+
+.back-to-explore {
+  background: transparent;
+  border: none;
+  color: #22314b;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.back-to-explore:hover {
+  text-decoration: underline;
+}
+
+

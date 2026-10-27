@@ -5,7 +5,6 @@ import Discover from "./pages/Discover";
 import BookDetails from "./pages/BookDetails";
 import MyShelves from "./pages/MyShelves";
 import Statistics from "./pages/Statistics";
-import books from "./data/books";
 
 
 const navLinks = [
@@ -22,7 +21,7 @@ function App() {
 
       <main className="page-container">
         <Routes>
-          <Route path="/" element={<Discover books={books} />} />
+          <Route path="/" element={<Discover />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/shelves" element={<MyShelves />} />
           <Route path="/statistics" element={<Statistics />} />

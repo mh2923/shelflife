@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Discover from "./pages/Discover";
@@ -13,6 +14,12 @@ const navLinks = [
   { path: "/statistics", label: "Statistics" },
 ];
 
+function DiscoverRoute() {
+  const location = useLocation();
+
+  return <Discover key={location.key} />;
+}
+
 
 function App() {
   return (
@@ -21,7 +28,7 @@ function App() {
 
       <main className="page-container">
         <Routes>
-          <Route path="/" element={<Discover />} />
+          <Route path="/" element={<DiscoverRoute />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/shelves" element={<MyShelves />} />
           <Route path="/statistics" element={<Statistics />} />

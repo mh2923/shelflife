@@ -1,3 +1,6 @@
+
+/* Discover page */
+
 .discover-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -10,227 +13,19 @@
 }
 
 .discover-header h1 {
-  font-size: 36px;
+  color: #243047;
+  font-size: 42px;
   margin-bottom: 12px;
 }
 
 .discover-header p {
-  color: #666;
+  color: #6b7280;
   margin-bottom: 28px;
 }
 
-.search-container {
-  display: flex;
-  gap: 12px;
-  max-width: 600px;
-  margin: 0 auto;
-}
 
-.search-container input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-}
+/* Search bar */
 
-.search-container button,
-.details-button {
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 20px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.search-container button:hover,
-.details-button:hover {
-  background-color: #1d4ed8;
-}
-
-.discover-results h2 {
-  margin-bottom: 24px;
-}
-
-.book-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.book-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-}
-
-.book-cover {
-  width: 100%;
-  height: 250px;
-  object-fit: contain;
-  background-color: #f3f4f6;
-  padding: 12px;
-}
-
-.book-card-info {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.book-card-info h3 {
-  margin: 0 0 12px;
-  font-size: 18px;
-}
-
-.book-card-info p {
-  color: #555;
-  font-size: 14px;
-  margin: 4px 0;
-}
-
-.details-button {
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-  margin-top: auto;
-  padding-top: 12px;
-}
-
-/* Tablet screens */
-@media (max-width: 900px) {
-  .book-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Mobile screens */
-@media (max-width: 600px) {
-  .discover-page {
-    padding: 24px 16px;
-  }
-
-  .discover-header h1 {
-    font-size: 28px;
-  }
-
-  .search-container {
-    flex-direction: column;
-  }
-
-  .book-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ShelfLife bookstore theme */
-
-.discover-header h1 {
-  color: #243047;
-  font-size: 42px;
-}
-
-.discover-header p {
-  color: #6b7280;
-}
-
-.discover-results h2 {
-  color: #243047;
-  font-size: 26px;
-}
-
-.search-container input {
-  background-color: #ffffff;
-  border: 1px solid #d6cbbd;
-}
-
-.search-container input:focus {
-  outline: 2px solid #a47750;
-  outline-offset: 1px;
-}
-
-.search-container button,
-.details-button {
-  background-color: #243047;
-  color: #ffffff;
-}
-
-.search-container button:hover,
-.details-button:hover {
-  background-color: #a47750;
-}
-
-.book-card {
-  border: 1px solid #e5ddd1;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(36, 48, 71, 0.07);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.book-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(36, 48, 71, 0.13);
-}
-
-.book-cover {
-  background-color: #eee8de;
-}
-
-.book-card-info h3 {
-  color: #243047;
-}
-
-@media (max-width: 600px) {
-  .discover-header h1 {
-    font-size: 30px;
-  }
-}
-
-
-/* Phase 3: API loading, error and empty states */
-
-.discover-status {
-  margin: 28px 0;
-  padding: 24px;
-  text-align: center;
-  background: #f7f3eb;
-  color: #243047;
-  border: 1px solid #ded6c9;
-  border-radius: 12px;
-  font-size: 16px;
-}
-
-.discover-error {
-  background: #fff0ed;
-  color: #9b3030;
-  border-color: #e9c3bb;
-}
-
-.book-cover-placeholder {
-  width: 100%;
-  height: 100%;
-  min-height: 190px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background: #e8e0d3;
-  color: #66594d;
-  text-align: center;
-  font-size: 14px;
-}
-
-
-/* Phase 3 layout fixes */
-
-/* Keep the search bar styled like Phase 2 */
 .search-container {
   display: flex;
   justify-content: center;
@@ -246,73 +41,38 @@
   padding: 13px 16px;
   border: 1px solid #d6cbbb;
   border-radius: 8px;
-  background: #fff;
+  background-color: #ffffff;
   color: #22314b;
   font-size: 16px;
+}
+
+.search-container input:focus {
+  outline: 2px solid #a47750;
+  outline-offset: 1px;
 }
 
 .search-container button {
   padding: 13px 24px;
   border: none;
   border-radius: 8px;
-  background: #22314b;
-  color: #fff;
+  background-color: #22314b;
+  color: #ffffff;
   font-size: 16px;
   cursor: pointer;
 }
 
 .search-container button:hover {
-  background: #344a6d;
+  background-color: #344a6d;
 }
 
-/* Prevent book covers from overflowing */
-.book-card {
-  overflow: hidden;
-  min-width: 0;
+
+/* Results section */
+
+.discover-results h2 {
+  color: #243047;
+  font-size: 26px;
+  margin-bottom: 24px;
 }
-
-.book-cover {
-  display: block;
-  width: 100%;
-  height: 250px;
-  object-fit: contain;
-  background: #eee8df;
-}
-
-/* Keep the book information below the cover */
-.book-card-info {
-  padding: 20px;
-  min-width: 0;
-}
-
-.book-card-info h3 {
-  margin-top: 0;
-  overflow-wrap: anywhere;
-}
-
-/* Missing-cover fallback */
-.no-cover {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #6d6255;
-  text-align: center;
-  font-size: 14px;
-}
-
-/* Mobile search bar */
-@media (max-width: 600px) {
-  .search-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-container button {
-    width: 100%;
-  }
-}
-
-/* Results heading and Back to Explore button */
 
 .results-heading {
   display: flex;
@@ -342,3 +102,184 @@
 }
 
 
+/* Book grid */
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+
+/* Book cards */
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e5ddd1;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(36, 48, 71, 0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(36, 48, 71, 0.13);
+}
+
+.book-cover {
+  display: block;
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  background-color: #eee8df;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+
+/* Missing book covers */
+
+.no-cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #6d6255;
+  text-align: center;
+  font-size: 14px;
+}
+
+
+/* Book information */
+
+.book-card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 20px;
+}
+
+.book-card-info h3 {
+  color: #243047;
+  font-size: 18px;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+
+.book-card-info p {
+  color: #555555;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+
+/* View Details button */
+
+.details-button {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  margin-top: auto;
+  padding: 12px 20px;
+  background-color: #243047;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.details-button:hover {
+  background-color: #a47750;
+}
+
+
+/* Loading, error and empty states */
+
+.discover-status {
+  margin: 28px 0;
+  padding: 24px;
+  text-align: center;
+  background-color: #f7f3eb;
+  color: #243047;
+  border: 1px solid #ded6c9;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.discover-error {
+  background-color: #fff0ed;
+  color: #9b3030;
+  border-color: #e9c3bb;
+}
+
+
+/* Error message and Retry button */
+
+.error-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-section .discover-status {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 12px 0 0;
+}
+
+.retry-button {
+  padding: 10px 22px;
+  margin-top: 0;
+  background-color: #22314b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.retry-button:hover {
+  background-color: #344a6d;
+}
+
+
+/* Tablet screens */
+
+@media (max-width: 900px) {
+  .book-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* Mobile screens */
+
+@media (max-width: 600px) {
+  .discover-page {
+    padding: 24px 16px;
+  }
+
+  .discover-header h1 {
+    font-size: 30px;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container button {
+    width: 100%;
+  }
+
+  .book-grid {
+    grid-template-columns: 1fr;
+  }
+}

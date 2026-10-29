@@ -149,15 +149,50 @@ src/
 
 React Router is used to navigate between pages without full-page reloads.
 
+## Phase 3 – Live Data Integration
+
+ShelfLife now uses the Open Library API to retrieve real book data.
+
+### Discover Books
+- Fetches books from the Open Library Search API using async/await.
+- Displays fiction-related books on the initial Explore page.
+- Allows users to search for books by title or author.
+- Displays book covers, titles, authors, and publication years.
+- Provides a Back to Explore button to return to the initial results.
+- Handles missing book covers with a "No Cover Available" message.
+
+### API States
+- Loading: Displays a loading message while fetching books.
+- Error: Displays a readable message when an API request fails.
+- Empty: Displays a message when no matching books are found.
+- Success: Displays the books returned by the API.
+
+If a request fails, users can click Try Again to repeat the request or use the search bar to search for another book.
+
+### Phase 3 Testing
+The following scenarios are tested before submission:
+
+- Initial book loading from the API.
+- Searching for different books.
+- Searching for a title with no matching results.
+- Simulating an offline connection using browser Developer Tools.
+- Recovering from an API error using the Try Again button.
+- Navigating between the application pages.
+
+A screenshot of the offline error state is included as evidence of testing.
+
+### Features Reserved for Phase 4
+My Shelves and Reading Statistics currently use sample data. Functional shelf management, shared state, and localStorage persistence are planned for Phase 4.
+
 ## Current Project Status
 
-**Phase 2 – Static Interface**
+**Phase 3 – Live Data**
 
-The application currently demonstrates its layout, navigation, reusable components, sample book data, and reading statistics.
+The Discover page is connected to the Open Library API and supports live book searching, loading, error, and empty states.
 
-Book information is hardcoded for this phase. Book cover images are displayed using Open Library cover URLs.
+The My Shelves and Reading Statistics pages retain their Phase 2 sample data and interface functionality.
 
-The search, Add to Shelf, Move, and Remove controls are included as interface placeholders and are not yet connected to live data or persistent storage.
+Shelf management, persistent storage, and dynamic reading statistics will be implemented in Phase 4.
 
 ## Planned Future Development
 
@@ -183,4 +218,4 @@ The search, Add to Shelf, Move, and Remove controls are included as interface pl
 **Instructor:** Dr. Ali Rodan  
 **Semester:** Fall 2026  
 **Project:** Group Project – ShelfLife  
-**Current Phase:** Phase 2 – Static Interface
+**Current Phase:** Phase 3 – Live Data

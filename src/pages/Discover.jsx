@@ -8,6 +8,8 @@ function Discover() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -18,8 +20,7 @@ function Discover() {
       setResults([]);
 
       try {
-        const url =
-          `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=12`;
+        const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=12`;
 
         const response = await fetch(url, {
           signal: controller.signal,
@@ -34,7 +35,7 @@ function Discover() {
         const formattedBooks = data.docs
           .filter((item) => item.key?.startsWith("/works/"))
           .map((item) => ({
-            id: item.key.split("/").pop(),
+            id: item.key.replace("/works/", ""),
             title: item.title || "Untitled",
             author: item.author_name?.[0] || "Unknown Author",
             year: item.first_publish_year || "Unknown",
@@ -46,7 +47,9 @@ function Discover() {
         }
       } catch (err) {
         if (err.name !== "AbortError") {
-          setError("Could not fetch books. Check your internet connection and try again.");
+          setError(
+            "Could not fetch books. Check your internet connection and try again."
+          );
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -58,20 +61,36 @@ function Discover() {
     fetchBooks();
 
     return () => controller.abort();
-  }, [searchQuery]);
+  }, [searchQuery, retryCount]);
 
   function handleSearch(event) {
     event.preventDefault();
     const query = searchInput.trim();
 
     if (query) {
-      setSearchQuery(query);
+      setHasSearched(true);
+
+      if (query === searchQuery) {
+        setRetryCount((count) => count + 1);
+      } else {
+        setSearchQuery(query);
+      }
     }
   }
 
   function handleBackToExplore() {
     setSearchInput("");
-    setSearchQuery("fiction");
+    setHasSearched(false);
+
+    if (searchQuery === "fiction") {
+      setRetryCount((count) => count + 1);
+    } else {
+      setSearchQuery("fiction");
+    }
+  }
+
+  function handleRetry() {
+    setRetryCount((count) => count + 1);
   }
 
   return (
@@ -95,12 +114,12 @@ function Discover() {
       <section className="discover-results">
         <div className="results-heading">
           <h2>
-            {searchQuery === "fiction"
-              ? "Explore Books"
-              : `Results for "${searchQuery}"`}
+            {hasSearched
+              ? `Results for "${searchQuery}"`
+              : "Explore Books"}
           </h2>
 
-          {searchQuery !== "fiction" && (
+          {hasSearched && (
             <button
               type="button"
               className="back-to-explore"
@@ -118,9 +137,19 @@ function Discover() {
         )}
 
         {!loading && error && (
-          <p className="discover-status discover-error" role="alert">
-            {error}
-          </p>
+          <div className="error-section">
+            <p className="discover-status discover-error" role="alert">
+              {error}
+            </p>
+
+            <button
+              type="button"
+              className="retry-button"
+              onClick={handleRetry}
+            >
+              Try Again
+            </button>
+          </div>
         )}
 
         {!loading && !error && results.length === 0 && (

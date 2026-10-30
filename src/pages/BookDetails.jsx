@@ -1,34 +1,144 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import books from "../data/books";
 import "./BookDetails.css";
 
-const descriptions = {
-  1: "Bilbo Baggins goes on an unexpected adventure with a group of dwarves to reclaim their treasure from the dragon Smaug.",
-  2: "A dystopian novel about Winston Smith, who lives under a government that controls information, thoughts, and everyday life.",
-  3: "The story of Elizabeth Bennet and Mr. Darcy, exploring love, family, social class, and misunderstandings.",
-  4: "A novel about Jay Gatsby, his pursuit of Daisy Buchanan, and the American Dream during the Jazz Age.",
-};
+const API = "https://openlibrary.org";
 
-const subjects = {
-  1: ["Fantasy", "Adventure", "Classic"],
-  2: ["Dystopian", "Science Fiction", "Classic"],
-  3: ["Romance", "Fiction", "Classic"],
-  4: ["Fiction", "Drama", "Classic"],
-};
+function getDescription(raw) {
+  if (!raw) return "";
+  const text = typeof raw === "string" ? raw : raw.value || "";
+  return text.split(/\r?\n-{5,}/)[0].trim();
+}
+
+function getYear(dateStr) {
+  const match = String(dateStr || "").match(/\d{4}/);
+  return match ? match[0] : "";
+}
 
 function BookDetails() {
   const { id } = useParams();
 
-  const book = books.find((item) => item.id === Number(id));
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  if (!book) {
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadBook() {
+      setLoading(true);
+      setError("");
+      setBook(null);
+
+      try {
+        const res = await fetch(`${API}/works/${id}.json`);
+
+        if (res.status === 404) {
+          throw new Error("We couldn't find that book.");
+        }
+        if (!res.ok) {
+          throw new Error("Something went wrong loading this book.");
+        }
+
+        const data = await res.json();
+
+        const authorKeys = (data.authors || [])
+          .map((a) => a.author?.key)
+          .filter(Boolean)
+          .slice(0, 3);
+
+        const authorNames = await Promise.all(
+          authorKeys.map(async (key) => {
+            try {
+              const r = await fetch(`${API}${key}.json`);
+              if (!r.ok) return null;
+              const a = await r.json();
+              return a.name || null;
+            } catch {
+              return null;
+            }
+          })
+        );
+
+        const coverId = (data.covers || []).find((c) => c > 0);
+
+        let year = getYear(data.first_publish_date);
+
+        // Works API often has no date, so fall back to the Search API
+        if (!year) {
+          try {
+            const r = await fetch(
+              `${API}/search.json?q=key:/works/${id}&fields=first_publish_year&limit=1`
+            );
+            if (r.ok) {
+              const s = await r.json();
+              year = s.docs?.[0]?.first_publish_year
+                ? String(s.docs[0].first_publish_year)
+                : "";
+            }
+          } catch {
+            // ignore, we'll just show Unknown
+          }
+        }
+
+        if (!cancelled) {
+          setBook({
+            id,
+            title: data.title || "Untitled",
+            author: authorNames.filter(Boolean).join(", "),
+            year,
+            coverId,
+            description: getDescription(data.description),
+            subjects: (data.subjects || []).slice(0, 8),
+          });
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err instanceof TypeError
+              ? "Network error. Check your connection and try again."
+              : err.message
+          );
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadBook();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (loading) {
     return (
       <section className="book-details">
-        <h1>Book not found</h1>
-        <Link to="/">Back to Discover</Link>
+        <Link to="/" className="back-link">
+          &larr; Back to Search
+        </Link>
+        <p className="status-message loading-message">Loading book details...</p>
       </section>
     );
   }
+
+  if (error || !book) {
+    return (
+      <section className="book-details">
+        <Link to="/" className="back-link">
+          &larr; Back to Search
+        </Link>
+        <div className="status-message error-message">
+          <h1>Book not found</h1>
+          <p>{error || "Something went wrong."}</p>
+        </div>
+      </section>
+    );
+  }
+
+  const authorText = book.author || "Unknown author";
+  const yearText = book.year || "Unknown";
 
   return (
     <section className="book-details">
@@ -38,30 +148,34 @@ function BookDetails() {
 
       <div className="book-details-top">
         <div className="details-cover">
-          <img
-            src={`https://covers.openlibrary.org/b/id/${book.coverId}-L.jpg`}
-            alt={`Cover of ${book.title}`}
-          />
+          {book.coverId ? (
+            <img
+              src={`https://covers.openlibrary.org/b/id/${book.coverId}-L.jpg`}
+              alt={`Cover of ${book.title}`}
+            />
+          ) : (
+            <div className="details-cover-placeholder">No cover available</div>
+          )}
         </div>
 
         <div className="book-main-info">
           <h1 className="book-title">{book.title}</h1>
-          <p className="book-author">by {book.author}</p>
-          <p className="book-year">
-            First published: {book.year}
-          </p>
+          <p className="book-author">by {authorText}</p>
+          <p className="book-year">First published: {yearText}</p>
 
-          <ul className="subject-tags">
-            {subjects[book.id].map((subject) => (
-              <li key={subject} className="subject-tag">
-                {subject}
-              </li>
-            ))}
-          </ul>
+          {book.subjects.length > 0 && (
+            <ul className="subject-tags">
+              {book.subjects.map((subject) => (
+                <li key={subject} className="subject-tag">
+                  {subject}
+                </li>
+              ))}
+            </ul>
+          )}
 
           <div className="book-description">
             <h2>Description</h2>
-            <p>{descriptions[book.id]}</p>
+            <p>{book.description || "No description available for this book."}</p>
           </div>
         </div>
       </div>
@@ -73,12 +187,12 @@ function BookDetails() {
           <dl className="info-list">
             <div className="info-row">
               <dt>Author</dt>
-              <dd>{book.author}</dd>
+              <dd>{authorText}</dd>
             </div>
 
             <div className="info-row">
               <dt>Publication Year</dt>
-              <dd>{book.year}</dd>
+              <dd>{yearText}</dd>
             </div>
 
             <div className="info-row">
@@ -95,11 +209,7 @@ function BookDetails() {
             Choose a shelf
           </label>
 
-          <select
-            id="shelf-select"
-            className="shelf-select"
-            defaultValue=""
-          >
+          <select id="shelf-select" className="shelf-select" defaultValue="">
             <option value="" disabled>
               Select a shelf...
             </option>

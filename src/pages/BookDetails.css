@@ -221,7 +221,6 @@
 }
 
 
-/* ShelfLife Book Details layout and theme */
 
 .book-details {
   max-width: 1100px;
@@ -300,7 +299,7 @@
   background-color: #a47750;
 }
 
-/* Tablet and mobile */
+
 @media (max-width: 768px) {
   .book-details {
     padding: 28px 16px 40px;
@@ -334,3 +333,30 @@
   }
 }
 
+
+.status-message {
+  text-align: center;
+  padding: 48px 16px;
+  font-size: 1.05rem;
+  color: #6b7280;
+}
+
+.error-message h1 {
+  margin: 0 0 8px;
+  color: #243047;
+}
+
+.error-message p {
+  margin: 0;
+}
+
+.details-cover .details-cover-placeholder {
+  height: 100%;
+  aspect-ratio: auto;
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #f7f3ec;
+  border-color: #d6cbbd;
+  color: #8b735e;
+}

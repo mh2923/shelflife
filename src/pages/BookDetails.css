@@ -360,3 +360,20 @@
   border-color: #d6cbbd;
   color: #8b735e;
 }
+
+/* Read More / Show Less button */
+
+.read-more-button {
+  margin-top: 12px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #a47750;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.read-more-button:hover {
+  text-decoration: underline;
+}

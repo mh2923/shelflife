@@ -6,8 +6,16 @@ const API = "https://openlibrary.org";
 
 function getDescription(raw) {
   if (!raw) return "";
-  const text = typeof raw === "string" ? raw : raw.value || "";
-  return text.split(/\r?\n-{5,}/)[0].trim();
+
+  let text = typeof raw === "string" ? raw : raw.value || "";
+
+  // Replace Markdown links with their readable text
+  text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+
+  // Remove long separator lines
+  text = text.split(/\r?\n-{5,}/)[0];
+
+  return text.trim();
 }
 
 function getYear(dateStr) {
@@ -21,6 +29,7 @@ function BookDetails() {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -140,6 +149,14 @@ function BookDetails() {
   const authorText = book.author || "Unknown author";
   const yearText = book.year || "Unknown";
 
+  const description = book.description || "No description available for this book.";
+  const isLongDescription = description.length > 300;
+
+  const displayedDescription =
+    isLongDescription && !showFullDescription
+      ? description.slice(0, 300) + "..."
+      : description;
+
   return (
     <section className="book-details">
       <Link to="/" className="back-link">
@@ -175,7 +192,17 @@ function BookDetails() {
 
           <div className="book-description">
             <h2>Description</h2>
-            <p>{book.description || "No description available for this book."}</p>
+            <p>{displayedDescription}</p>
+
+            {isLongDescription && (
+              <button
+                type="button"
+                className="read-more-button"
+                onClick={() => setShowFullDescription(!showFullDescription)}
+              >
+                {showFullDescription ? "Show Less" : "Read More"}
+              </button>
+            )}
           </div>
         </div>
       </div>

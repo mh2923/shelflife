@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link } from "react-router";
 import "./Navbar.css";
 import logo from "../assets/shelflife-logo.png";
 

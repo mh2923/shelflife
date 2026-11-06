@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+import { BooksProvider } from "./context/BooksProvider";
 
 import App, { DiscoverRoute, BookDetailsRoute } from "./App.jsx";
 import MyShelves from "./pages/MyShelves";
@@ -24,6 +25,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <BooksProvider>
+      <RouterProvider router={router} />
+    </BooksProvider>
   </React.StrictMode>
 );

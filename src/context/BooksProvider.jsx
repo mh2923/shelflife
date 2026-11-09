@@ -2,9 +2,22 @@ import { useEffect, useState } from "react";
 import { BooksContext } from "./BooksContext";
 
 export function BooksProvider({ children }) {
+  
   const [books, setBooks] = useState(() => {
-    const savedBooks = localStorage.getItem("shelflife-books");
-    return savedBooks ? JSON.parse(savedBooks) : [];
+    try {
+      const savedBooks = localStorage.getItem("shelflife-books");
+
+      if (!savedBooks) {
+        return [];
+      }
+
+      const parsedBooks = JSON.parse(savedBooks);
+
+      return Array.isArray(parsedBooks) ? parsedBooks : [];
+    } catch (error) {
+      console.error("Could not load saved books:", error);
+      return [];
+    }
   });
 
   useEffect(() => {

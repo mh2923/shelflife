@@ -46,12 +46,14 @@ function Discover() {
           setResults(formattedBooks);
         }
       } catch (err) {
-        if (err.name !== "AbortError") {
-          setError(
-            "Could not fetch books. Check your internet connection and try again."
-          );
-        }
-      } finally {
+          if (err.name !== "AbortError") {
+            console.error("Open Library error:", err);
+
+            setError(
+              "Could not fetch books. Please try again."
+            );
+          }
+        } finally {
         if (!controller.signal.aborted) {
           setLoading(false);
         }

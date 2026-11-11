@@ -1,21 +1,5 @@
 import "./Statistics.css";
-
-const shelfData = [
-  { id: "want", label: "Want to Read", count: 5 },
-  { id: "reading", label: "Reading", count: 2 },
-  { id: "finished", label: "Finished", count: 3 },
-];
-
-const decadeData = [
-  { id: "1920s", label: "1920s", count: 1 },
-  { id: "1930s", label: "1930s", count: 1 },
-  { id: "1940s", label: "1940s", count: 1 },
-  { id: "1960s", label: "1960s", count: 2 },
-  { id: "1980s", label: "1980s", count: 1 },
-  { id: "1990s", label: "1990s", count: 1 },
-  { id: "2000s", label: "2000s", count: 1 },
-  { id: "2010s", label: "2010s", count: 2 },
-];
+import { useBooks } from "../context/useBooks";
 
 const SPINE_LOOKS = [
   { width: 1.0, height: 78 },
@@ -32,46 +16,73 @@ const SPINE_LOOKS = [
   { width: 1.0, height: 80 },
 ];
 
-const totalBooks = shelfData.reduce((sum, shelf) => sum + shelf.count, 0);
+function Statistics() {
+  const { books } = useBooks();
+  const totalBooks = books.length;
 
-const shelves = shelfData.map((shelf, shelfIndex) => {
-  const booksBefore = shelfData
-    .slice(0, shelfIndex)
-    .reduce((sum, earlier) => sum + earlier.count, 0);
-
-  const spines = Array.from({ length: shelf.count }, (_, i) => ({
-    id: `${shelf.id}-${i}`,
-    ...SPINE_LOOKS[(booksBefore + i) % SPINE_LOOKS.length],
+  const shelfData = [
+    { id: "want", label: "Want to Read" },
+    { id: "reading", label: "Reading" },
+    { id: "finished", label: "Finished" },
+  ].map((shelf) => ({
+    ...shelf,
+    count: books.filter((book) => book.status === shelf.id).length,
   }));
 
-  return {
-    ...shelf,
-    spines,
-    percent: Math.round((shelf.count / totalBooks) * 100),
-    weight: spines.reduce((sum, spine) => sum + spine.width, 0),
-  };
-});
+  const shelves = shelfData.map((shelf, shelfIndex) => {
+    const booksBefore = shelfData
+      .slice(0, shelfIndex)
+      .reduce((sum, earlier) => sum + earlier.count, 0);
 
-const summaryCards = [
-  { id: "total", label: "Total Books", value: totalBooks },
-  ...shelfData.map((shelf) => ({
-    id: shelf.id,
-    label: shelf.label,
-    value: shelf.count,
-  })),
-];
+    const spines = Array.from({ length: shelf.count }, (_, i) => ({
+      id: `${shelf.id}-${i}`,
+      ...SPINE_LOOKS[(booksBefore + i) % SPINE_LOOKS.length],
+    }));
 
-const finished = shelves.find((shelf) => shelf.id === "finished");
-const maxDecadeCount = Math.max(...decadeData.map((d) => d.count));
-const topDecade = decadeData.reduce((best, d) =>
-  d.count > best.count ? d : best
-);
+    return {
+      ...shelf,
+      spines,
+      percent: totalBooks ? Math.round((shelf.count / totalBooks) * 100) : 0,
+      weight: spines.reduce((sum, spine) => sum + spine.width, 0),
+    };
+  });
 
-const shelfSummary = shelves
-  .map((shelf) => `${shelf.count} ${shelf.label}`)
-  .join(", ");
+  const summaryCards = [
+    { id: "total", label: "Total Books", value: totalBooks },
+    ...shelfData.map((shelf) => ({
+      id: shelf.id,
+      label: shelf.label,
+      value: shelf.count,
+    })),
+  ];
 
-function Statistics() {
+  const decadeCounts = books.reduce((counts, book) => {
+    const year = Number.parseInt(book.year, 10);
+    if (!Number.isNaN(year)) {
+      const decade = `${Math.floor(year / 10) * 10}s`;
+      counts[decade] = (counts[decade] || 0) + 1;
+    }
+    return counts;
+  }, {});
+
+  const decadeData = Object.entries(decadeCounts)
+    .sort(([a], [b]) => Number.parseInt(a, 10) - Number.parseInt(b, 10))
+    .map(([id, count]) => ({ id, label: id, count }));
+
+  const finished = shelves.find((shelf) => shelf.id === "finished");
+  const maxDecadeCount = Math.max(
+    0,
+    ...decadeData.map((decade) => decade.count)
+  );
+  const topDecade = decadeData.reduce(
+    (best, decade) => (decade.count > best.count ? decade : best),
+    { id: "none", label: "any decade", count: 0 }
+  );
+
+  const shelfSummary = shelves
+    .map((shelf) => `${shelf.count} ${shelf.label}`)
+    .join(", ");
+
   return (
     <section className="statistics">
       <header className="stats-header">
@@ -142,11 +153,14 @@ function Statistics() {
       <div className="stats-panel">
         <h2>Books by Publication Decade</h2>
         <p className="stats-panel-note">
-          Most of your books were first published in the {topDecade.label}.
+          {topDecade.count > 0
+            ? `Most of your books were first published in the ${topDecade.label}.`
+            : "Publication decade data will appear when you add books."}
         </p>
 
-        <ul className="stats-bars">
-          {decadeData.map((decade) => (
+        {decadeData.length > 0 ? (
+          <ul className="stats-bars">
+            {decadeData.map((decade) => (
             <li
               key={decade.id}
               className={`stats-bar-row${
@@ -158,7 +172,11 @@ function Statistics() {
                 <div
                   className="stats-bar-fill"
                   style={{
-                    width: `${(decade.count / maxDecadeCount) * 100}%`,
+                    width: `${
+                      maxDecadeCount
+                        ? (decade.count / maxDecadeCount) * 100
+                        : 0
+                    }%`,
                   }}
                 />
               </div>
@@ -167,8 +185,11 @@ function Statistics() {
                 <span className="stats-sr-only"> books</span>
               </span>
             </li>
-          ))}
-        </ul>
+            ))}
+          </ul>
+        ) : (
+          <p className="stats-panel-note">No publication data available yet.</p>
+        )}
       </div>
     </section>
   );

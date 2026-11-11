@@ -1,63 +1,79 @@
 
 import { useState } from "react";
+import { Link } from "react-router";
+import { useBooks } from "../context/useBooks";
 import "./MyShelves.css";
 
-
-const books = [
-    { id: 1, title: "The Hobbit", author: "J.R.R. Tolkien", year: 1937, shelf: "Want to Read", isbn: "9780547928227" },
-    { id: 2, title: "1984", author: "George Orwell", year: 1949, shelf: "Want to Read", isbn: "9780451524935" },
-    { id: 3, title: "Dune", author: "Frank Herbert", year: 1965, shelf: "Want to Read", isbn: "9780441172719" },
-    { id: 4, title: "The Alchemist", author: "Paulo Coelho", year: 1988, shelf: "Want to Read", isbn: "9780061122415" },
-    { id: 5, title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, shelf: "Want to Read", isbn: "9780743273565" },
-    { id: 6, title: "Atomic Habits", author: "James Clear", year: 2018, shelf: "Reading", isbn: "9780735211292" },
-    { id: 7, title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", year: 1997, shelf: "Reading", isbn: "9780590353427" },
-    { id: 8, title: "The Hunger Games", author: "Suzanne Collins", year: 2008, shelf: "Finished", isbn: "9780439023481" },
-    { id: 9, title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, shelf: "Finished", isbn: "9780061120084" },
-    { id: 10, title: "The Fault in Our Stars", author: "John Green", year: 2012, shelf: "Finished", isbn: "9780525478812" },
+const shelfNames = [
+    { label: "Want to Read", status: "want" },
+    { label: "Reading", status: "reading" },
+    { label: "Finished", status: "finished" },
 ];
 
+function ShelfBookCard({ book, moveBook, removeBook }) {
+    const [coverError, setCoverError] = useState(false);
 
-const shelfNames = ["Want to Read", "Reading", "Finished"];
+    const coverUrl = book.coverId
+        ? `https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`
+        : book.isbn
+            ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`
+            : null;
 
-function ShelfBookCard({ book }) {
     return (
         <div className="shelf-book-card">
             <div className="shelf-cover-placeholder">
-                <img
-                    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
-                    alt={`Cover of ${book.title}`}
-                    className="shelf-book-cover"
-                />
+                {coverUrl && !coverError ? (
+                    <img
+                        src={coverUrl}
+                        alt={`Cover of ${book.title}`}
+                        className="shelf-book-cover"
+                        onError={() => setCoverError(true)}
+                    />
+                ) : (
+                    <span>No Cover Available</span>
+                )}
             </div>
 
             <div className="shelf-book-info">
                 <h3>{book.title}</h3>
-                <p className="shelf-book-author">by {book.author}</p>
+
+                <p className="shelf-book-author">
+                    by {book.author || "Unknown author"}
+                </p>
+
                 <p className="shelf-book-year">
-                    First published: {book.year}
+                    First published: {book.year || "Unknown"}
                 </p>
             </div>
 
             <div className="shelf-book-actions">
                 <select
                     className="shelf-move-select"
-                    defaultValue=""
+                    value=""
                     aria-label={`Move ${book.title} to another shelf`}
+                    onChange={(e) => moveBook(book.id, e.target.value)}
                 >
                     <option value="" disabled>
                         Move to...
                     </option>
 
                     {shelfNames
-                        .filter((shelf) => shelf !== book.shelf)
+                        .filter((shelf) => shelf.status !== book.status)
                         .map((shelf) => (
-                            <option key={shelf} value={shelf}>
-                                {shelf}
+                            <option
+                                key={shelf.status}
+                                value={shelf.status}
+                            >
+                                {shelf.label}
                             </option>
                         ))}
                 </select>
 
-                <button type="button" className="shelf-remove-button">
+                <button
+                    type="button"
+                    className="shelf-remove-button"
+                    onClick={() => removeBook(book.id)}
+                >
                     Remove
                 </button>
             </div>
@@ -66,10 +82,12 @@ function ShelfBookCard({ book }) {
 }
 
 function MyShelves() {
-    const [activeShelf, setActiveShelf] = useState("Want to Read");
+    const { books, moveBook, removeBook } = useBooks();
+
+    const [activeShelf, setActiveShelf] = useState("want");
 
     const filteredBooks = books.filter(
-        (book) => book.shelf === activeShelf
+        (book) => book.status === activeShelf
     );
 
     return (
@@ -77,36 +95,55 @@ function MyShelves() {
             <div className="shelves-header">
                 <div>
                     <h1>My Reading Shelves</h1>
-                    <p>Organize your books and track your reading journey.</p>
+                    <p>
+                        Organize your books and track your reading journey.
+                    </p>
                 </div>
 
-                <button type="button" className="shelf-add-button">
-                    + Add a Book
-                </button>
+                <div className="shelf-header-actions">
+                    <Link to="/" className="shelf-add-button">
+                        + Add a Book
+                    </Link>
+                </div>
             </div>
 
-            {/* Shelf tabs */}
             <div className="shelf-tabs">
                 {shelfNames.map((shelf) => (
                     <button
                         type="button"
-                        key={shelf}
-                        className={`shelf-tab ${activeShelf === shelf ? "active" : ""
+                        key={shelf.status}
+                        className={`shelf-tab ${activeShelf === shelf.status ? "active" : ""
                             }`}
-                        onClick={() => setActiveShelf(shelf)}
+                        onClick={() => setActiveShelf(shelf.status)}
                     >
-                        {shelf}
+                        {shelf.label}
+
                         <span className="shelf-count">
-                            {books.filter((book) => book.shelf === shelf).length}
+                            {
+                                books.filter(
+                                    (book) => book.status === shelf.status
+                                ).length
+                            }
                         </span>
                     </button>
                 ))}
             </div>
 
             <section className="shelf-book-list">
-                {filteredBooks.map((book) => (
-                    <ShelfBookCard key={book.id} book={book} />
-                ))}
+                {filteredBooks.length > 0 ? (
+                    filteredBooks.map((book) => (
+                        <ShelfBookCard
+                            key={book.id}
+                            book={book}
+                            moveBook={moveBook}
+                            removeBook={removeBook}
+                        />
+                    ))
+                ) : (
+                    <p className="shelf-empty-message">
+                        No books on this shelf yet.
+                    </p>
+                )}
             </section>
         </main>
     );

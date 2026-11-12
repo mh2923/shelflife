@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
+import { useBooks } from "../context/useBooks";
 import "./BookDetails.css";
 
 const API = "https://openlibrary.org";
+
+const SHELF_LABELS = {
+  want: "Want to Read",
+  reading: "Reading",
+  finished: "Finished",
+};
 
 function getDescription(raw) {
   if (!raw) return "";
 
   let text = typeof raw === "string" ? raw : raw.value || "";
 
-  // Replace Markdown links with their readable text
   text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
-  // Remove long separator lines
   text = text.split(/\r?\n-{5,}/)[0];
 
   return text.trim();
@@ -25,11 +30,16 @@ function getYear(dateStr) {
 
 function BookDetails() {
   const { id } = useParams();
+  const { books, addBook, moveBook } = useBooks();
 
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const [selectedShelf, setSelectedShelf] = useState("");
+  const [formError, setFormError] = useState("");
+  const [confirmation, setConfirmation] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -38,6 +48,9 @@ function BookDetails() {
       setLoading(true);
       setError("");
       setBook(null);
+      setSelectedShelf("");
+      setFormError("");
+      setConfirmation("");
 
       try {
         const res = await fetch(`${API}/works/${id}.json`);
@@ -73,7 +86,6 @@ function BookDetails() {
 
         let year = getYear(data.first_publish_date);
 
-        // Works API often has no date, so fall back to the Search API
         if (!year) {
           try {
             const r = await fetch(
@@ -86,7 +98,6 @@ function BookDetails() {
                 : "";
             }
           } catch {
-            // ignore, we'll just show Unknown
           }
         }
 
@@ -156,6 +167,49 @@ function BookDetails() {
     isLongDescription && !showFullDescription
       ? description.slice(0, 300) + "..."
       : description;
+
+  const savedBook = books.find((item) => item.id === book.id);
+
+  function handleShelfChange(event) {
+    setSelectedShelf(event.target.value);
+    setFormError("");
+    setConfirmation("");
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setConfirmation("");
+
+    if (!SHELF_LABELS[selectedShelf]) {
+      setFormError("Please choose a shelf before adding this book.");
+      return;
+    }
+
+    setFormError("");
+    const shelfName = SHELF_LABELS[selectedShelf];
+
+    if (savedBook) {
+      if (savedBook.status === selectedShelf) {
+        setConfirmation(`This book is already on your ${shelfName} shelf.`);
+        return;
+      }
+
+      moveBook(book.id, selectedShelf);
+      setConfirmation(`Moved "${book.title}" to ${shelfName}.`);
+      return;
+    }
+
+    addBook({
+      id: book.id,
+      title: book.title,
+      author: authorText,
+      year: book.year ? Number(book.year) : null,
+      coverId: book.coverId || null,
+      status: selectedShelf,
+    });
+
+    setConfirmation(`Added "${book.title}" to ${shelfName}.`);
+  }
 
   return (
     <section className="book-details">
@@ -229,30 +283,49 @@ function BookDetails() {
           </dl>
         </div>
 
-        <div className="info-card shelf-card">
+        <form className="info-card shelf-card" onSubmit={handleSubmit}>
           <h2>Add to Your Shelf</h2>
+
+          {savedBook && (
+            <p className="shelf-current">
+              Currently on: <strong>{SHELF_LABELS[savedBook.status]}</strong>
+            </p>
+          )}
 
           <label className="shelf-label" htmlFor="shelf-select">
             Choose a shelf
           </label>
 
-          <select id="shelf-select" className="shelf-select" defaultValue="">
+          <select
+            id="shelf-select"
+            className={`shelf-select ${formError ? "invalid" : ""}`}
+            value={selectedShelf}
+            onChange={handleShelfChange}
+          >
             <option value="" disabled>
               Select a shelf...
             </option>
-            <option value="Want to Read">Want to Read</option>
-            <option value="Reading">Reading</option>
-            <option value="Finished">Finished</option>
+            <option value="want">Want to Read</option>
+            <option value="reading">Reading</option>
+            <option value="finished">Finished</option>
           </select>
 
-          <button type="button" className="shelf-button">
-            Add to Shelf
+          {formError && (
+            <p className="shelf-error" role="alert">
+              {formError}
+            </p>
+          )}
+
+          <button type="submit" className="shelf-button">
+            {savedBook ? "Move to Shelf" : "Add to Shelf"}
           </button>
 
-          <p className="shelf-note">
-            Saving books will be available in a later phase.
-          </p>
-        </div>
+          {confirmation && (
+            <p className="shelf-success" role="status">
+              {confirmation} <Link to="/shelves">View My Shelves</Link>
+            </p>
+          )}
+        </form>
       </div>
     </section>
   );

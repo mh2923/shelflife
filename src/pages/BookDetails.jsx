@@ -97,8 +97,9 @@ function BookDetails() {
                 ? String(s.docs[0].first_publish_year)
                 : "";
             }
-          } catch {
-          }
+          } catch (err) {
+              console.error("Could not fetch publication year:", err);
+            }
         }
 
         if (!cancelled) {
@@ -150,7 +151,7 @@ function BookDetails() {
           &larr; Back to Search
         </Link>
         <div className="status-message error-message">
-          <h1>Book not found</h1>
+          <h1>{error === "We couldn't find that book." ? "Book not found" : "Unable to load book"}</h1>
           <p>{error || "Something went wrong."}</p>
         </div>
       </section>

@@ -343,3 +343,12 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+.shelf-empty-message {
+  padding: 24px;
+  text-align: center;
+  background-color: #f7f3eb;
+  color: #243047;
+  border: 1px solid #ded6c9;
+  border-radius: 12px;
+}

@@ -147,7 +147,7 @@
 .stats-spine-group {
   display: flex;
   align-items: flex-end;
-  flex-basis: 0;
+  flex: 1;
   gap: 3px;
   min-width: 0;
   height: 100%;
@@ -155,8 +155,7 @@
 
 .stats-spine {
   position: relative;
-  flex-basis: 0;
-  min-width: 0;
+  flex: 0 0 28px;
   border-radius: 3px 3px 0 0;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }

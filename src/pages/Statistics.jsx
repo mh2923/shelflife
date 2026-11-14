@@ -1,21 +1,6 @@
 import "./Statistics.css";
 import { useBooks } from "../context/useBooks";
 
-const SPINE_LOOKS = [
-  { width: 1.0, height: 78 },
-  { width: 1.4, height: 94 },
-  { width: 0.8, height: 70 },
-  { width: 1.2, height: 86 },
-  { width: 1.0, height: 100 },
-  { width: 1.5, height: 74 },
-  { width: 0.9, height: 90 },
-  { width: 1.1, height: 82 },
-  { width: 1.3, height: 96 },
-  { width: 0.8, height: 72 },
-  { width: 1.2, height: 88 },
-  { width: 1.0, height: 80 },
-];
-
 function Statistics() {
   const { books } = useBooks();
   const totalBooks = books.length;
@@ -29,21 +14,18 @@ function Statistics() {
     count: books.filter((book) => book.status === shelf.id).length,
   }));
 
-  const shelves = shelfData.map((shelf, shelfIndex) => {
-    const booksBefore = shelfData
-      .slice(0, shelfIndex)
-      .reduce((sum, earlier) => sum + earlier.count, 0);
-
-    const spines = Array.from({ length: shelf.count }, (_, i) => ({
-      id: `${shelf.id}-${i}`,
-      ...SPINE_LOOKS[(booksBefore + i) % SPINE_LOOKS.length],
-    }));
+  const shelves = shelfData.map((shelf) => {
+    const shelfBooks = books.filter(
+      (book) => book.status === shelf.id
+    );
 
     return {
       ...shelf,
-      spines,
-      percent: totalBooks ? Math.round((shelf.count / totalBooks) * 100) : 0,
-      weight: spines.reduce((sum, spine) => sum + spine.width, 0),
+      spines: shelfBooks,
+      percent: totalBooks
+        ? Math.round((shelf.count / totalBooks) * 100)
+        : 0,
+      weight: shelfBooks.length,
     };
   });
 
@@ -121,13 +103,13 @@ function Statistics() {
               className="stats-spine-group"
               style={{ flexGrow: shelf.weight }}
             >
-              {shelf.spines.map((spine) => (
-                <span
-                  key={spine.id}
-                  className={`stats-spine stats-spine--${shelf.id}`}
-                  style={{ flexGrow: spine.width, height: `${spine.height}%` }}
-                />
-              ))}
+            {shelf.spines.map((book) => (
+              <span
+                key={book.id}
+                className={`stats-spine stats-spine--${shelf.id}`}
+                style={{ flexGrow: 1, height: "85%" }}
+              />
+            ))}
             </div>
           ))}
         </div>

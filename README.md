@@ -4,14 +4,11 @@
 
 ShelfLife is a React-based reading tracker and book discovery application developed for **ISTE 340 – Client Programming** at Rochester Institute of Technology (RIT).
 
-The application is designed to help readers discover books, view book information, organize their reading shelves, and explore simple reading statistics.
-
-This repository currently contains the **Phase 2 – Static Interface** implementation.
+The application helps readers discover books, view book information, organize their reading shelves, and explore reading statistics.
 
 ## Team 2 – Team React
 
 | Team Member | Student ID |
-|---|---|
 | Muhammad Usman Habib | 761005924 |
 | Yehya Fayad | 772001680 |
 | Abdulrahman Shurrab | 784003726 |
@@ -21,54 +18,64 @@ This repository currently contains the **Phase 2 – Static Interface** implemen
 
 **Theme B – ShelfLife: Reading Tracker and Discovery**
 
-The project uses the Open Library API as its planned source of book information. During Phase 2, the application uses hardcoded sample book data to demonstrate the interface before live API integration.
+ShelfLife uses the Open Library API to retrieve book information. Users can search for books and save them to their own reading shelves. Saved books are stored locally in the browser.
 
 ## Technologies Used
 
 - React
 - Vite
 - JavaScript (ES6+)
-- React Router DOM
+- React Router v8
 - CSS
-- Open Library Covers API (book cover images)
+- Open Library API and Open Library Covers API
+- React Context
+- Browser `localStorage`
 
-## Phase 2 Features
-
-The Phase 2 implementation includes four pages:
+## Application Features
 
 ### 1. Discover Books
 
-- Displays a collection of sample books.
-- Shows book covers, titles, authors, and publication years.
+- Fetches real book data from the Open Library Search API.
+- Displays books with their titles, authors, publication years, and covers when available.
 - Uses a reusable `BookCard` component.
-- Includes a search interface for future implementation.
+- Allows users to search for books by title or author.
+- Provides a Back to Explore option to return to the initial results.
+- Displays loading, error, and empty-result messages.
+- Includes a Try Again button when an API request fails.
 - Allows navigation to individual book details.
 
 ### 2. Book Details
 
-- Displays detailed information about a selected book.
-- Shows its cover, title, author, publication year, description, and subjects.
+- Displays information about a selected book from Open Library.
+- Shows its cover, title, author, publication year, description, and subjects when available.
 - Uses dynamic routes to display the selected book.
-- Includes a shelf selection interface for future functionality.
+- Includes a controlled form for choosing a reading shelf.
+- Validates the shelf selection before submitting.
+- Displays a specific error message when no shelf is selected and clears it after correction.
+- Allows users to add a book to a shelf or change its shelf if it is already saved.
+- Displays a confirmation message after a successful action.
 
 ### 3. My Shelves
 
-- Displays books organized into three reading categories:
+- Organizes saved books into three categories:
   - Want to Read
   - Reading
   - Finished
-- Uses sample book data and book cover images.
+- Displays the books saved in each category.
 - Allows users to switch between shelf tabs.
-- Displays the number of books in each category.
-- Includes placeholder controls for adding, moving, and removing books.
+- Shows the number of books in each category.
+- Allows users to move books between shelves.
+- Allows users to remove books from their shelves.
+- Updates automatically when saved book data changes.
 
 ### 4. Reading Statistics
 
-- Displays the total number of books.
+- Displays the total number of saved books.
 - Shows the number of books in each reading category.
+- Calculates shelf percentages based on saved books.
 - Includes a visual bookshelf representation of shelf distribution.
-- Displays book counts grouped by publication decade.
-- Uses hardcoded sample data for Phase 2.
+- Displays book counts grouped by publication decade when publication years are available.
+- Updates automatically when books are added, moved, or removed.
 
 ## React Concepts Implemented
 
@@ -78,10 +85,12 @@ The Phase 2 implementation includes four pages:
 - JavaScript arrays and objects
 - Rendering lists using `.map()` and unique keys
 - Conditional rendering
-- React Router navigation
-- Dynamic routes using `useParams()`
-- Basic state management using `useState()`
-- Responsive styling using CSS
+- React Router navigation and dynamic routes
+- State management using `useState()`
+- Side effects and API requests using `useEffect()` and `fetch()`
+- Controlled forms and validation
+- React Context and a custom `useBooks()` hook
+- Browser persistence using `localStorage`
 
 ## Project Structure
 
@@ -93,6 +102,10 @@ src/
 │   ├── BookCard.jsx
 │   ├── Navbar.jsx
 │   └── Navbar.css
+├── context/
+│   ├── BooksContext.js
+│   ├── BooksProvider.jsx
+│   └── useBooks.js
 ├── data/
 │   └── books.js
 ├── pages/
@@ -109,6 +122,8 @@ src/
 └── index.css
 ```
 
+The project also includes `index.html` in the root folder and the ShelfLife favicon in `public/`.
+
 ## How to Run the Project
 
 **Prerequisites:**
@@ -118,8 +133,18 @@ src/
 
 **Steps:**
 
-1. Clone the GitHub repository or extract the submitted ZIP file.
-2. Open the project folder in Visual Studio Code or a terminal.
+1. Clone the GitHub repository:
+
+   ```bash
+   git clone https://github.com/mh2923/shelflife.git
+   ```
+
+2. Open the project folder:
+
+   ```bash
+   cd shelflife
+   ```
+
 3. Install the required dependencies:
 
    ```bash
@@ -138,10 +163,11 @@ src/
    http://localhost:5173/
    ```
 
+An internet connection is required to retrieve new book information from Open Library. Previously saved books are stored in the browser's `localStorage`.
+
 ## Application Routes
 
 | Route | Page |
-|---|---|
 | `/` | Discover Books |
 | `/book/:id` | Book Details |
 | `/shelves` | My Shelves |
@@ -151,66 +177,82 @@ React Router is used to navigate between pages without full-page reloads.
 
 ## Phase 3 – Live Data Integration
 
-ShelfLife now uses the Open Library API to retrieve real book data.
+In Phase 3, ShelfLife was connected to the Open Library API to replace sample book results with real data.
 
-### Discover Books
-- Fetches books from the Open Library Search API using async/await.
-- Displays fiction-related books on the initial Explore page.
-- Allows users to search for books by title or author.
-- Displays book covers, titles, authors, and publication years.
-- Provides a Back to Explore button to return to the initial results.
-- Handles missing book covers with a "No Cover Available" message.
+- Implemented live book searching using `fetch()` and `async/await`.
+- Displayed book information and covers from Open Library.
+- Added loading, error, empty-result, and success states.
+- Added a Try Again option for failed API requests.
+- Tested searches, navigation, and offline API error handling.
 
-### API States
-- Loading: Displays a loading message while fetching books.
-- Error: Displays a readable message when an API request fails.
-- Empty: Displays a message when no matching books are found.
-- Success: Displays the books returned by the API.
+## Phase 4 – Interaction and Polish
 
-If a request fails, users can click Try Again to repeat the request or use the search bar to search for another book.
+Phase 4 added functional reading shelves, shared state management, form validation, and persistent storage.
 
-### Phase 3 Testing
-The following scenarios are tested before submission:
+### Book Details Form
 
-- Initial book loading from the API.
-- Searching for different books.
-- Searching for a title with no matching results.
-- Simulating an offline connection using browser Developer Tools.
-- Recovering from an API error using the Try Again button.
-- Navigating between the application pages.
+- Uses a controlled shelf selection dropdown.
+- Blocks submission when no valid shelf is selected.
+- Shows a useful validation error beside the form field.
+- Clears the error when the selection is corrected.
+- Displays confirmation after adding or moving a book.
 
-A screenshot of the offline error state is included as evidence of testing.
+### React Context and localStorage
 
-### Features Reserved for Phase 4
-My Shelves and Reading Statistics currently use sample data. Functional shelf management, shared state, and localStorage persistence are planned for Phase 4.
+- Uses React Context to share saved books across Book Details, My Shelves, and Statistics.
+- Provides `addBook()`, `moveBook()`, and `removeBook()` functions.
+- Saves book data to `localStorage` when it changes.
+- Restores saved books when the application loads or refreshes.
+- Handles missing or invalid saved data without crashing.
+- Stores data separately for each browser profile, as expected with `localStorage`.
+
+### Functional Shelves and Statistics
+
+- Users can add, move, and remove books.
+- Shelf counts update when saved books change.
+- Statistics uses actual saved books instead of hardcoded sample counts.
+- Shelf distribution and publication decade information update dynamically.
+
+### Styling and Polish
+
+- Uses a consistent cream-and-navy bookstore design with brown accents.
+- Includes responsive styling for different screen sizes.
+- Uses a custom ShelfLife browser tab title and favicon.
+- Removes default Vite branding from the application interface.
+
+## Phase 4 Testing
+
+The application was checked for the following scenarios:
+
+- Loading and searching for books using Open Library.
+- Displaying a message for searches with no results.
+- Displaying an error when an API request fails.
+- Submitting the Book Details form without selecting a shelf.
+- Clearing the validation error after selecting a shelf.
+- Adding books to reading shelves and avoiding duplicate entries.
+- Moving and removing saved books.
+- Updating shelf counts and Statistics after changes.
+- Keeping saved books after refreshing or restarting the development server in the same browser profile.
+- Handling missing or invalid `localStorage` data.
+- Navigating between pages and checking consistent styling.
 
 ## Current Project Status
 
-**Phase 3 – Live Data**
+**Phase 4 – Interaction and Polish**
 
-The Discover page is connected to the Open Library API and supports live book searching, loading, error, and empty states.
+ShelfLife supports live book discovery, book details, validated shelf selection, functional reading shelves, dynamic reading statistics, and browser-based persistence using React Context and `localStorage`.
 
-The My Shelves and Reading Statistics pages retain their Phase 2 sample data and interface functionality.
-
-Shelf management, persistent storage, and dynamic reading statistics will be implemented in Phase 4.
+The next stage is Phase 5 – Final Delivery.
 
 ## Planned Future Development
 
-**Phase 3 – Live Data**
-- Integrate the Open Library API.
-- Implement book searching and filtering.
-- Display loading, error, and empty states.
-
-**Phase 4 – Interaction and Polish**
-- Implement functional shelf management.
-- Add form validation.
-- Use React Context for shared state.
-- Save reading shelves or preferences using localStorage.
-
 **Phase 5 – Final Delivery**
-- Complete application testing and improvements.
-- Prepare the final demonstration and presentation.
-- Submit the required project documentation and AI-use reflection.
+
+- Perform final application testing and fix any remaining issues.
+- Complete and review the project README and source code.
+- Prepare the group demonstration video and presentation slides.
+- Prepare the AI-use reflection and prompt log required by the course.
+- Present the completed application as a team.
 
 ## Course Information
 
@@ -218,4 +260,4 @@ Shelf management, persistent storage, and dynamic reading statistics will be imp
 **Instructor:** Dr. Ali Rodan  
 **Semester:** Fall 2026  
 **Project:** Group Project – ShelfLife  
-**Current Phase:** Phase 3 – Live Data
+**Current Phase:** Phase 4 – Interaction and Polish

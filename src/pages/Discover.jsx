@@ -10,8 +10,10 @@ function Discover() {
   const [error, setError] = useState("");
   const [retryCount, setRetryCount] = useState(0);
   const [hasSearched, setHasSearched] = useState(false);
+  const [validationError, setValidationError] = useState("");
 
   useEffect(() => {
+    // Cancel the previous API request when the search changes or the page unmounts.
     const controller = new AbortController();
 
     async function fetchBooks() {
@@ -32,6 +34,7 @@ function Discover() {
 
         const data = await response.json();
 
+        // Convert Open Library results into the book format used by ShelfLife.
         const formattedBooks = data.docs
           .filter((item) => item.key?.startsWith("/works/"))
           .map((item) => ({
@@ -69,19 +72,24 @@ function Discover() {
     event.preventDefault();
     const query = searchInput.trim();
 
-    if (query) {
-      setHasSearched(true);
+    if (query.length < 3) {
+      setValidationError("Please enter at least 3 characters to search.");
+      return;
+    }
 
-      if (query === searchQuery) {
-        setRetryCount((count) => count + 1);
-      } else {
-        setSearchQuery(query);
-      }
+    setValidationError("");
+    setHasSearched(true);
+
+    if (query === searchQuery) {
+      setRetryCount((count) => count + 1);
+    } else {
+      setSearchQuery(query);
     }
   }
 
   function handleBackToExplore() {
     setSearchInput("");
+    setValidationError("");
     setHasSearched(false);
 
     if (searchQuery === "fiction") {
@@ -111,6 +119,11 @@ function Discover() {
           />
           <button type="submit">Search</button>
         </form>
+        {validationError && (
+          <p className="search-validation-error" role="alert">
+            {validationError}
+          </p>
+        )}
       </section>
 
       <section className="discover-results">

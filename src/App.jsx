@@ -10,6 +10,7 @@ const navLinks = [
   { path: "/statistics", label: "Statistics" },
 ];
 
+// Use route-specific keys to reset page state when navigation changes.
 export function DiscoverRoute() {
   const location = useLocation();
 

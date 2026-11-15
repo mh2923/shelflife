@@ -14,6 +14,7 @@ function Statistics() {
     count: books.filter((book) => book.status === shelf.id).length,
   }));
 
+  // Calculate each shelf's percentage and prepare its books for the visualization.
   const shelves = shelfData.map((shelf) => {
     const shelfBooks = books.filter(
       (book) => book.status === shelf.id
@@ -38,6 +39,7 @@ function Statistics() {
     })),
   ];
 
+  // Group books by publication decade, ignoring missing or invalid years.
   const decadeCounts = books.reduce((counts, book) => {
     const year = Number.parseInt(book.year, 10);
     if (!Number.isNaN(year)) {

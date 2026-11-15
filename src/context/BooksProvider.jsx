@@ -3,6 +3,8 @@ import { BooksContext } from "./BooksContext";
 
 export function BooksProvider({ children }) {
   
+  // Load saved books from localStorage when the app starts.
+  // If the saved data is missing or invalid, use an empty array.
   const [books, setBooks] = useState(() => {
     try {
       const savedBooks = localStorage.getItem("shelflife-books");
@@ -20,10 +22,12 @@ export function BooksProvider({ children }) {
     }
   });
 
+  // Save the updated book collection whenever it changes.
   useEffect(() => {
     localStorage.setItem("shelflife-books", JSON.stringify(books));
   }, [books]);
 
+  // Prevent the same book from being added to multiple shelves.
   function addBook(book) {
     setBooks((currentBooks) => {
       const alreadySaved = currentBooks.some(

@@ -13,6 +13,7 @@ const shelfNames = [
 function ShelfBookCard({ book, moveBook, removeBook }) {
     const [coverError, setCoverError] = useState(false);
 
+    // Use the cover ID when available, otherwise try the ISBN.
     const coverUrl = book.coverId
         ? `https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`
         : book.isbn

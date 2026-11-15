@@ -11,6 +11,7 @@ const SHELF_LABELS = {
   finished: "Finished",
 };
 
+// Clean Open Library descriptions, which may contain formatting or extra sections.
 function getDescription(raw) {
   if (!raw) return "";
 
@@ -33,6 +34,7 @@ function BookDetails() {
   const { books, addBook, moveBook } = useBooks();
 
   const [book, setBook] = useState(null);
+  const [editions, setEditions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -48,6 +50,7 @@ function BookDetails() {
       setLoading(true);
       setError("");
       setBook(null);
+      setEditions([]);
       setSelectedShelf("");
       setFormError("");
       setConfirmation("");
@@ -64,6 +67,31 @@ function BookDetails() {
 
         const data = await res.json();
 
+        // Fetch up to five editions of this book.
+        try {
+          const editionsRes = await fetch(
+            `${API}/works/${id}/editions.json?limit=5`
+          );
+
+          if (editionsRes.ok) {
+            const editionsData = await editionsRes.json();
+
+            const editionList = (editionsData.entries || []).map((edition) => ({
+              id: edition.key,
+              publisher: edition.publishers?.[0] || "Unknown publisher",
+              year: edition.publish_date || "Unknown date",
+              isbn: edition.isbn_13?.[0] || edition.isbn_10?.[0] || "Not available",
+            }));
+
+            if (!cancelled) {
+              setEditions(editionList);
+            }
+          }
+        } catch {
+          // Editions are optional, so the main book details still work.
+        }
+
+        // Fetch author names separately because work details mainly provide author IDs.
         const authorKeys = (data.authors || [])
           .map((a) => a.author?.key)
           .filter(Boolean)
@@ -86,6 +114,7 @@ function BookDetails() {
 
         let year = getYear(data.first_publish_date);
 
+        // Use the search API as a fallback when the work has no publication date.
         if (!year) {
           try {
             const r = await fetch(
@@ -181,6 +210,7 @@ function BookDetails() {
     event.preventDefault();
     setConfirmation("");
 
+    // Validate the shelf selection before adding or moving a book.
     if (!SHELF_LABELS[selectedShelf]) {
       setFormError("Please choose a shelf before adding this book.");
       return;
@@ -327,6 +357,30 @@ function BookDetails() {
             </p>
           )}
         </form>
+      </div>
+
+      <div className="editions-section info-card">
+        <h2>Available Editions</h2>
+
+        {editions.length > 0 ? (
+          <div className="editions-list">
+            {editions.map((edition) => (
+              <div className="edition-item" key={edition.id}>
+                <p>
+                  <strong>Publisher:</strong> {edition.publisher}
+                </p>
+                <p>
+                  <strong>Publication Date:</strong> {edition.year}
+                </p>
+                <p>
+                  <strong>ISBN:</strong> {edition.isbn}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No edition information available for this book.</p>
+        )}
       </div>
     </section>
   );

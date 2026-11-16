@@ -4,7 +4,7 @@ import "./Discover.css";
 
 function Discover() {
   const [searchInput, setSearchInput] = useState("");
-  const [searchQuery, setSearchQuery] = useState("fiction");
+  const [searchQuery, setSearchQuery] = useState("thriller");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -36,7 +36,11 @@ function Discover() {
 
         // Convert Open Library results into the book format used by ShelfLife.
         const formattedBooks = data.docs
-          .filter((item) => item.key?.startsWith("/works/"))
+          .filter(
+            (item) =>
+              item.key?.startsWith("/works/") &&
+              item.cover_i
+          )
           .map((item) => ({
             id: item.key.replace("/works/", ""),
             title: item.title || "Untitled",
@@ -92,10 +96,10 @@ function Discover() {
     setValidationError("");
     setHasSearched(false);
 
-    if (searchQuery === "fiction") {
+    if (searchQuery === "thriller") {
       setRetryCount((count) => count + 1);
     } else {
-      setSearchQuery("fiction");
+      setSearchQuery("thriller");
     }
   }
 

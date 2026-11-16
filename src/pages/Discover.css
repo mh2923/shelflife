@@ -4,12 +4,12 @@
 .discover-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 16px 24px 32px;
 }
 
 .discover-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 20px;
 }
 
 .discover-header h1 {
@@ -20,7 +20,7 @@
 
 .discover-header p {
   color: #6b7280;
-  margin-bottom: 28px;
+  margin-bottom: 12px;
 }
 
 
@@ -32,7 +32,7 @@
   align-items: center;
   gap: 12px;
   max-width: 650px;
-  margin: 28px auto 0;
+  margin: 16px auto 0;
 }
 
 .search-container input {

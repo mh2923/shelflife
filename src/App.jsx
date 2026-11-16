@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useLocation, useParams } from "react-router";
 
 import Navbar from "./components/Navbar";
@@ -24,6 +25,24 @@ export function BookDetailsRoute() {
 }
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+
+    if (path === "/") {
+      document.title = "ShelfLife | Discover Books";
+    } else if (path === "/shelves") {
+      document.title = "ShelfLife | My Shelves";
+    } else if (path === "/statistics") {
+      document.title = "ShelfLife | Reading Statistics";
+    } else if (path.startsWith("/book/")) {
+      document.title = "ShelfLife | Book Details";
+    } else {
+      document.title = "ShelfLife";
+    }
+  }, [location.pathname]);
+
   return (
     <div className="app">
       <Navbar links={navLinks} />

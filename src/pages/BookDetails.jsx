@@ -265,13 +265,17 @@ function BookDetails() {
           <p className="book-author">by {authorText}</p>
           <p className="book-year">First published: {yearText}</p>
 
-          {book.subjects.length > 0 && (
+          {book.subjects
+            .filter((subject) => !subject.toLowerCase().startsWith("nyt:"))
+            .length > 0 && (
             <ul className="subject-tags">
-              {book.subjects.map((subject) => (
-                <li key={subject} className="subject-tag">
-                  {subject}
-                </li>
-              ))}
+              {book.subjects
+                .filter((subject) => !subject.toLowerCase().startsWith("nyt:"))
+                .map((subject) => (
+                  <li key={subject} className="subject-tag">
+                    {subject}
+                  </li>
+                ))}
             </ul>
           )}
 

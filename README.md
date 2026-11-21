@@ -1,11 +1,50 @@
 # ShelfLife — Reading Tracker and Book Discovery
 
-ShelfLife is a React web application developed for **ISTE 340 – Client Programming** at Rochester Institute of Technology (RIT). It helps readers discover books using the Open Library API, view book details, organize personal reading shelves, and see statistics about their saved books.
+ShelfLife is a React web application that allows users to
+discover books, organize reading shelves, and view statistics.
 
 **Project theme:** Theme B — ShelfLife: Reading Tracker and Discovery  
-**Team:** Team 2 — Team React  
+**Team:** Team 2
 **Semester:** Fall 2026  
-**Instructor:** Dr. Ali Rodan
+**Course code:** ISTE.340
+**Section:** 600
+
+## Requirements
+
+- Node.js
+- npm
+- Internet connection (for the Open Library API)
+
+## Installation & Setup
+
+1. Clone the repository:
+
+   git clone https://github.com/mh2923/shelflife.git
+
+2. Navigate into the project:
+
+   cd shelflife
+
+3. Install dependencies:
+
+   npm install
+
+4. Start the development server:
+
+   npm run dev
+
+5. Open the local URL displayed in the terminal.
+   Usually: http://localhost:5173/
+
+Other useful commands:
+
+```bash
+npm run lint      # Run ESLint
+npm run build     # Create a production build in dist/
+npm run preview   # Preview the production build locally
+```
+
+If using a provided source ZIP instead of GitHub, extract it, open a terminal in the folder containing `package.json`, then run `npm install` and `npm run dev`.
 
 ## Team Members
 
@@ -57,29 +96,6 @@ All members contributed to testing, integration, and final project review.
 - Browser `localStorage`
 - CSS with responsive layouts
 - Open Library Search, Works, Authors, Editions, and Covers APIs
-
-## Requirements and Setup
-
-Install **Node.js and npm**. An internet connection is needed to retrieve new information from Open Library.
-
-```bash
-git clone https://github.com/mh2923/shelflife.git
-cd shelflife
-npm install
-npm run dev
-```
-
-Open the local address printed by Vite, usually `http://localhost:5173/`.
-
-Other useful commands:
-
-```bash
-npm run lint      # Run ESLint
-npm run build     # Create a production build in dist/
-npm run preview   # Preview the production build locally
-```
-
-If using a provided source ZIP instead of GitHub, extract it, open a terminal in the folder containing `package.json`, then run `npm install` and `npm run dev`.
 
 ## Application Routes
 
